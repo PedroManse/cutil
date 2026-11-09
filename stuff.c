@@ -636,7 +636,7 @@ void HashTableFree(HashTable *table) {
 		}
 		// delete nodes and Hashnodes
 		if (table->array[i] != NULL) {
-			nodeListFree(table->array[i], true);
+			node_list_free(table->array[i], true);
 		}
 	}
 	free(table->array);
@@ -654,7 +654,7 @@ int HashTableAdd(
 	size_t index = table->HashFunction(key, keylen);
 	assert(index > 0); // hash funcion failed
 	index = index%table->size;
-	node *tail = GetLastnodeLen((table->array)[index], &node_count);
+	node *tail = get_last_node_len((table->array)[index], &node_count);
 
 	Hashnode *hnode = malloc(sizeof(Hashnode));
 	hnode->obj = obj;
@@ -664,9 +664,9 @@ int HashTableAdd(
 
 	if (tail == NULL) {
 		table->used++;
-		table->array[index] = nodeAlloc(hnode);
+		table->array[index] = node_alloc(hnode);
 	} else {
-		nodeAppend(tail, hnode);
+		node_append(tail, hnode);
 	}
 	return node_count+1;
 }
